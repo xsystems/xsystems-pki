@@ -106,6 +106,7 @@ fi
 # software. Only used when the crypto alg is rsa (see below.)
 
 #set_var EASYRSA_KEY_SIZE	2048
+set_var EASYRSA_KEY_SIZE	4096
 
 # The default crypto mode is rsa; ec can enable elliptic curve support.
 # Note that not all software supports ECC, so use care when enabling it.
@@ -127,15 +128,18 @@ fi
 # In how many days should certificates expire?
 
 #set_var EASYRSA_CERT_EXPIRE	825
+set_var EASYRSA_CERT_EXPIRE	365
 
 # How many days until the next CRL publish date?  Note that the CRL can still be
 # parsed after this timeframe passes. It is only used for an expected next
 # publication date.
 #set_var EASYRSA_CRL_DAYS	180
+set_var EASYRSA_CRL_DAYS	30
 
 # How many days before its expiration date a certificate is allowed to be
 # renewed?
 #set_var EASYRSA_CERT_RENEW	30
+set_var EASYRSA_CERT_RENEW	365
 
 # Random serial numbers by default, set to no for the old incremental serial numbers
 #
