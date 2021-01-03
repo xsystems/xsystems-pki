@@ -1,12 +1,38 @@
 #!/bin/sh
 
+# https://github.com/OpenVPN/easy-rsa
+# https://wiki.archlinux.org/index.php/Easy-RSA
+# https://www.maths.tcd.ie/~fionn/misc/ec_vpn/
+
 usage() {
     echo "Usage: $0 (client|server|ca) PKI_DIR COMMON_NAME"
     exit 1
 }
 
+create_ovpn() {
+    local OVPN_DIR="${EASYRSA_PKI}/openvpn"
+    local OVPN_FILE="${OVPN_DIR}/$1.ovpn"
+
+    mkdir -p "${OVPN_DIR}"
+
+    cat template.ovpn                   >   "${OVPN_FILE}"
+    echo                                >>  "${OVPN_FILE}"
+    echo "<ca>"                         >>  "${OVPN_FILE}"
+    cat "${EASYRSA_PKI}/ca.crt"         >>  "${OVPN_FILE}"
+    echo "</ca>"                        >>  "${OVPN_FILE}"
+    echo                                >>  "${OVPN_FILE}"
+    echo "<cert>"                       >>  "${OVPN_FILE}"
+    cat "${EASYRSA_PKI}/issued/$1.crt"  >>  "${OVPN_FILE}"
+    echo "</cert>"                      >>  "${OVPN_FILE}"
+    echo                                >>  "${OVPN_FILE}"
+    echo "<key>"                        >>  "${OVPN_FILE}"
+    cat "${EASYRSA_PKI}/private/$1.key" >>  "${OVPN_FILE}"
+    echo "</key>"                       >>  "${OVPN_FILE}"
+}
+
 create_client() {
-    easyrsa build-client-full "$1" nopass
+    easyrsa build-client-full "$1"
+    create_ovpn "$1"
 }
 
 create_server() {
@@ -18,6 +44,7 @@ create_ca() {
     EASYRSA_REQ_CN="$1" easyrsa --batch build-ca
 }
 
+export EASYRSA="$(dirname $0)"
 X509_TYPE="$1"
 export EASYRSA_PKI="$2"
 COMMON_NAME="$3"

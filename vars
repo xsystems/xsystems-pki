@@ -116,10 +116,12 @@ set_var EASYRSA_KEY_SIZE	4096
 #  * ed
 
 #set_var EASYRSA_ALGO		rsa
+set_var EASYRSA_ALGO 		ec
 
 # Define the named curve, used in ec & ed modes:
 
 #set_var EASYRSA_CURVE		secp384r1
+set_var EASYRSA_CURVE 		secp521r1
 
 # In how many days should the root CA key expire?
 
@@ -216,6 +218,7 @@ set_var EASYRSA_CERT_RENEW	365
 # Valid choices include: md5, sha1, sha256, sha224, sha384, sha512
 
 #set_var EASYRSA_DIGEST		"sha256"
+set_var EASYRSA_DIGEST 		"sha512"
 
 # Batch mode. Leave this disabled unless you intend to call Easy-RSA explicitly
 # in batch mode without any user input, confirmation on dangerous operations,
